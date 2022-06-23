@@ -147,6 +147,8 @@ fabgl::Terminal      Terminal;
 Canvas cv(&VGAController);
 TerminalController tc(&Terminal);
 
+unsigned char lastKey;
+unsigned long lastKeyTime; 
 
 
 void print_info()
@@ -199,7 +201,7 @@ SPIClass spiSD(HSPI);
 
 // Arduino-specific configuration
 // set this to the card select for your SD shield
-#define kSD_CS 13  // ------------------------ old era 10 -------------------------------------------------------------
+#define kSD_CS 5  // ------------------------ old era 10 -------------------------------------------------------------
 
 #define kSD_Fail  0
 #define kSD_OK    1
@@ -1292,6 +1294,8 @@ interperateAtTxtpos:
     goto cursor;
   case KW_AT:
     goto at;
+  case KW_INKEY:
+    goto inkey;
   case KW_DEFAULT:
     goto assignment;
   default:
@@ -2384,6 +2388,23 @@ at: {
     goto run_next_statement;
 }
 
+inkey: {
+    unsigned char var;
+    int value;
+    ignore_blanks();
+    if(*txtpos < 'A' || *txtpos > 'Z')
+      goto qwhat;
+    var = *txtpos;
+    txtpos++;
+    ignore_blanks();
+    if(*txtpos != NL && *txtpos != ':')
+      goto qwhat;
+      
+    ((short int *)variables_begin)[var-'A'] = lastKey;
+    
+    goto run_next_statement;
+}
+
 
 #ifdef ENABLE_TONES
 tonestop:
@@ -2549,9 +2570,13 @@ void setup()
 static unsigned char breakcheck(void)
 {
 #ifdef ARDUINO
-  if(Serial.available())
-    return Serial.read() == CTRLC;
-  return 0;
+  if(Serial.available()) {
+    lastKey = Serial.read();
+    lastKeyTime = millis();
+  } else if (millis() - lastKeyTime > 50) {
+    lastKey = 0;
+  }
+  return lastKey == CTRLC;
 #else
 #ifdef __CONIO__
   if(kbhit())
@@ -2692,8 +2717,8 @@ static int initSD( void )
 
   if( sd_is_initialized == true ) return kSD_OK;
 
-  //spiSD.begin(14, 16, 17, kSD_CS); ////SCK,MISO,MOSI,SS //HSPI1
-  spiSD.begin(14, 2, 12, kSD_CS);  ////SCK,MISO,MOSI,SS //HSPI1
+  spiSD.begin(18, 19, 23, kSD_CS); ////SCK,MISO,MOSI,SS //HSPI1
+  //spiSD.begin(14, 2, 12, kSD_CS);  ////SCK,MISO,MOSI,SS //HSPI1
   
   if( !SD.begin( kSD_CS, spiSD )) {
     // failed
