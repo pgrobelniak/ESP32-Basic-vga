@@ -1,5 +1,11 @@
 #define kVersion "v0.15"
 
+// v0.16: 2022-06-26
+//      Changes by Paweł Grobelniak (pawel.grobelniak@gmail.com)
+//      - implemented INKEY (works fine with serial, not so much with PS/2 keyboard yet)
+//      - changed pins for SD Card to SC = 18, MISO = 19, MOSI = 23, CS = 5
+//      - changed pins for VGA to R = 22, G = 21, B = 4, H = 13, V = 15
+
 // v0.15: 2029-10-23
 //      Changes by fg1998 (fg1998@gmail.com)
 //      Only for ESP32 with FabGL !!!!!!
@@ -155,14 +161,15 @@ void print_info()
 {
   Terminal.write("\e[33mESP32 TinyBasic PC with VGA monitor and PS2keyboard\r\n");
   Terminal.write("\e[32mby Roberto Melzi\e[32m\r\n\n");
-  Terminal.write("\e[32mVGA32_V1.4 by fg1998 \e[31m github.com/fg1998/ESP32-Basic-vga \e[32m\r\n\n");
+  Terminal.write("\e[32mVGA32_V1.4 by fg1998 \e[31m github.com/fg1998/ESP32-Basic-vga \e[32m\r\n");
+  Terminal.write("\e[32mVGA32_V1.5 by Pawel Grobelniak \e[31m github.com/pgrobelniak/ESP32-Basic-vga \e[32m\r\n\n");
   Terminal.write("\e[37mFabGL - Loopback VT/ANSI Terminal\r\n");
   Terminal.write("\e[37m2019 by Fabrizio Di Vittorio - www.fabgl.com\e[32m\r\n\n");
   Terminal.printf("\e[31mScreen Size        :\e[33m %d x %d\r\n", VGAController.getScreenWidth(), VGAController.getScreenHeight());
   Terminal.printf("\e[32mTerminal Size      :\e[33m %d x %d\r\n", Terminal.getColumns(), Terminal.getRows());
   Terminal.printf("\e[35mFree DMA Memory    :\e[33m %d\r\n", heap_caps_get_free_size(MALLOC_CAP_DMA));
   Terminal.printf("\e[36mFree 32 bit Memory :\e[33m %d\r\n\n", heap_caps_get_free_size(MALLOC_CAP_32BIT));
-  Terminal.printf("\e[37mTinyBasic Plus v0.15\r\n");
+  Terminal.printf("\e[37mTinyBasic Plus v0.16\r\n");
   //Terminal.write("\e[32mFree typing test - press ESC to introduce escape VT/ANSI codes\r\n\n");
 
 }
@@ -2514,8 +2521,9 @@ void setup()
   
   PS2Controller.begin(PS2Preset::KeyboardPort0);
 
+  VGAController.begin(GPIO_NUM_22,  GPIO_NUM_21,  GPIO_NUM_4, GPIO_NUM_13, GPIO_NUM_15);
   //VGAController.begin(GPIO_NUM_22,  GPIO_NUM_19,  GPIO_NUM_5, GPIO_NUM_23, GPIO_NUM_15);
-  VGAController.begin(GPIO_NUM_22, GPIO_NUM_21, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5, GPIO_NUM_4, GPIO_NUM_23, GPIO_NUM_15);
+  //VGAController.begin(GPIO_NUM_22, GPIO_NUM_21, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5, GPIO_NUM_4, GPIO_NUM_23, GPIO_NUM_15);
   VGAController.setResolution(VGA_640x200_70Hz);
   
   Canvas cv(&VGAController);

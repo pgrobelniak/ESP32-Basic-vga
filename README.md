@@ -1,5 +1,13 @@
 # ESP32-Basic-vga
 
+### v0.16: 2022-06-26 - Changes by Paweł Grobelniak
+
+- implemented INKEY (works fine with serial, not so much with PS/2 keyboard yet)
+- changed pins for SD Card to SC = 18, MISO = 19, MOSI = 23, CS = 5
+- changed pins for VGA to R = 22, G = 21, B = 4, H = 13, V = 15
+
+### v0.15: 2019-10-23 - Changes by fg1998
+
 This is a modified version of ESP32 Computer Basic with vga found on instructables https://www.instructables.com/ESP32-Basic-PC-With-VGA-Output/ with some improvements
 
 1 - Works with latest version of FABgl http://www.fabglib.org/classfabgl_1_1_terminal.html
@@ -33,5 +41,6 @@ See DEMO.BAS for new features
   
   DONT FORGET !!!!
   LOAD "/DEMO.BAS"
+ 
   
   
