@@ -6,7 +6,7 @@
 //      - changed pins for SD Card to SC = 18, MISO = 19, MOSI = 23, CS = 5
 //      - changed pins for VGA to R = 22, G = 21, B = 4, H = 13, V = 15
 
-// v0.15: 2029-10-23
+// v0.15: 2019-10-23
 //      Changes by fg1998 (fg1998@gmail.com)
 //      Only for ESP32 with FabGL !!!!!!
 //      Modified for latest version of FagGL (0.9.0)
@@ -162,7 +162,7 @@ void print_info()
   Terminal.write("\e[33mESP32 TinyBasic PC with VGA monitor and PS2keyboard\r\n");
   Terminal.write("\e[32mby Roberto Melzi\e[32m\r\n\n");
   Terminal.write("\e[32mVGA32_V1.4 by fg1998 \e[31m github.com/fg1998/ESP32-Basic-vga \e[32m\r\n");
-  Terminal.write("\e[32mVGA32_V1.5 by Pawel Grobelniak \e[31m github.com/pgrobelniak/ESP32-Basic-vga \e[32m\r\n\n");
+  Terminal.write("\e[32mVGA32_V1.16 by Pawel Grobelniak \e[31m github.com/pgrobelniak/ESP32-Basic-vga \e[32m\r\n\n");
   Terminal.write("\e[37mFabGL - Loopback VT/ANSI Terminal\r\n");
   Terminal.write("\e[37m2019 by Fabrizio Di Vittorio - www.fabgl.com\e[32m\r\n\n");
   Terminal.printf("\e[31mScreen Size        :\e[33m %d x %d\r\n", VGAController.getScreenWidth(), VGAController.getScreenHeight());
